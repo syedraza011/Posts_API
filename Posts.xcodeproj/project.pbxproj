@@ -11,6 +11,8 @@
 		E992C5F02A40F8E200830783 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E992C5EF2A40F8E200830783 /* ContentView.swift */; };
 		E992C5F22A40F8E500830783 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E992C5F12A40F8E500830783 /* Assets.xcassets */; };
 		E992C5F52A40F8E500830783 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E992C5F42A40F8E500830783 /* Preview Assets.xcassets */; };
+		E992C5FC2A40F93200830783 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E992C5FB2A40F93200830783 /* PostService.swift */; };
+		E992C5FE2A40F94E00830783 /* SinglePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E992C5FD2A40F94E00830783 /* SinglePostCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		E992C5EF2A40F8E200830783 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E992C5F12A40F8E500830783 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E992C5F42A40F8E500830783 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E992C5FB2A40F93200830783 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
+		E992C5FD2A40F94E00830783 /* SinglePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePostCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,8 @@
 				E992C5EF2A40F8E200830783 /* ContentView.swift */,
 				E992C5F12A40F8E500830783 /* Assets.xcassets */,
 				E992C5F32A40F8E500830783 /* Preview Content */,
+				E992C5FB2A40F93200830783 /* PostService.swift */,
+				E992C5FD2A40F94E00830783 /* SinglePostCell.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -138,7 +144,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E992C5F02A40F8E200830783 /* ContentView.swift in Sources */,
+				E992C5FC2A40F93200830783 /* PostService.swift in Sources */,
 				E992C5EE2A40F8E200830783 /* PostsApp.swift in Sources */,
+				E992C5FE2A40F94E00830783 /* SinglePostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
