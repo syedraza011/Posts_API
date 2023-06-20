@@ -1,5 +1,5 @@
 //
-//  PostService.swift
+//  PostViewModel.swift
 //  Posts
 //
 //  Created by Syed Raza on 6/19/23.
