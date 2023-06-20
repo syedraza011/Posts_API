@@ -5,35 +5,41 @@
 //  Created by Syed Raza on 6/19/23.
 //
 import SwiftUI
+
 struct ContentView: View {
-    @StateObject var viewModel = PostViewModel()
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                List(viewModel.posts) { post in
-                    NavigationLink(destination: PostDetailsView(post: post)) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(" PostID: \(post.id)")
-                                .font(.subheadline)
-                                .foregroundColor(.black)
-                            Text(post.title)
-                                .foregroundColor(.primary)
-//                            Text(post.body)
-//                                .foregroundColor(.primary)
+@StateObject var viewModel = PostViewModel()
+                
+                var body: some View {
+                    NavigationView {
+                        VStack {
+                            List(viewModel.posts) { post in
+                                NavigationLink(destination: PostDetailsView(post: post)) {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Post ID: \(post.id)")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white)
+                                        Text(post.title)
+                                            .foregroundColor(.primary)
+                                        Text(post.body)
+                                            .foregroundColor(.primary)
+                                    }
+                                   
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(20)
+                            }
+                        }
+                        .navigationTitle("Posts")
+                        .onAppear {
+                            viewModel.getPosts()
                         }
                     }
-                    .padding()
                 }
             }
-            .navigationTitle("Posts")
-            .onAppear {
-                viewModel.getPosts()
-            }
-        }
-    }
-}
 
+      
 
 struct PostDetailsView: View {
     let post: Post
