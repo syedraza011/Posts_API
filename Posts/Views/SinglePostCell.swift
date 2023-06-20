@@ -10,27 +10,50 @@ import SwiftUI
 struct SinglePostCell: View {
     let post: Post
     var body: some View {
-        VStack (){
-            Text("\(post.userId)")
-                .font(.headline)
-                .foregroundColor(.blue)
-                .fontWeight(.bold)
-            Text("\(post.id)")
-                .font(.headline)
-                .foregroundColor(.blue)
-                .fontWeight(.bold)
-            Text(post.title)
+        VStack {
+            Text("Single Post")
                 .font(.title)
-                .fontWeight(.bold)
                 .foregroundColor(.primary)
-            Text(post.body)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-         
-   
-}
-
+                .padding()
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("postID: \(post.id)")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                Text("userID: \(post.userId)")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                Text("Title:")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                Text(post.title)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                
+                Text("Body:")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                Text(post.body)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+            }
+            .padding()
+            .background(Color.gray)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+            .padding()
+            
+            Spacer()
+        }
+     
     }
+
+    
 }
 struct SinglePostCell_Previews: PreviewProvider {
     static var previews: some View {

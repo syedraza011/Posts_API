@@ -14,7 +14,7 @@ struct ContentView: View {
                 List(viewModel.posts) { post in
                     NavigationLink(destination: PostDetailsView(post: post)) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("\(post.id)")
+                            Text(" PostID: \(post.id)")
                                 .font(.subheadline)
                                 .foregroundColor(.black)
                             Text(post.title)
@@ -34,6 +34,7 @@ struct ContentView: View {
     }
 }
 
+
 struct PostDetailsView: View {
     let post: Post
     
@@ -44,18 +45,35 @@ struct PostDetailsView: View {
                 .foregroundColor(.primary)
                 .padding()
             
-            Text("ID: \(post.id)")
-                .font(.subheadline)
-                .foregroundColor(.black)
-                .padding()
-            
-            Text("Title: \(post.title)")
-                .foregroundColor(.primary)
-                .padding()
-            
-            Text("Body: \(post.body)")
-                .foregroundColor(.primary)
-                .padding()
+            VStack(alignment: .leading, spacing: 8) {
+                Text("userID: \(post.userId)")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                Text("Title:")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                Text(post.title)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                
+                Text("Body:")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                Text(post.body)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+            .padding()
             
             Spacer()
         }
