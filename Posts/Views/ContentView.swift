@@ -20,8 +20,8 @@ struct ContentView: View {
                                             .foregroundColor(.white)
                                         Text(post.title)
                                             .foregroundColor(.primary)
-                                        Text(post.body)
-                                            .foregroundColor(.primary)
+//                                        Text(post.body)
+//                                            .foregroundColor(.primary)
                                     }
                                    
                                 }
