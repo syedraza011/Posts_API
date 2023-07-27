@@ -1,12 +1,12 @@
 //
-//  PostService.swift
-//  Posts
+//  PostsService.swift
+//  PostsDemo
 //
-//  Created by Syed Raza on 6/19/23.
+//  Created by Syed Raza on 6/22/23.
 //
+
 import Foundation
 import Combine
-
 
 enum APIError: Error {
     case invalidUrl
@@ -14,75 +14,107 @@ enum APIError: Error {
     case emptyData
     case serviceUnavailable
     case decodingError
-  
+    
     var description: String {
         switch self {
         case .invalidUrl:
-            return "Invalid URL"
+            return "invalid url"
         case .invalidResponse:
-            return "Invalid Response"
+            return "invalid response"
         case .emptyData:
-            return "Invalid URL"
+            return "empty data"
         case .serviceUnavailable:
-            return "Service Not Available"
+            return "service unavailable"
         case .decodingError:
-            return "Decoding Error"
+            return "decoding error"
         }
     }
 }
 
-class PostService {
-    var cancelable = Set<AnyCancellable>()
-    let urlString = "https://jsonplaceholder.typicode.com/posts"
+protocol PostsServiceProtocol {
+    func fetchPostsUsingAsyncAwait() async throws -> [Post]
+    func fetchPosts() -> Future<[Post], Error>
+}
+
+class PostsService: PostsServiceProtocol {
     
-    func fetchPostUsingAsyncAwait() async throws -> [Post] {
-        guard let url = URL(string: urlString) else {
-            throw APIError.invalidUrl
-        }
-        
+    struct Constants {
+        static let baseURL = "https://jsonplaceholder.typicode.com/posts"
+    }
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    // Using Async await for GET call
+    func fetchPostsUsingAsyncAwait() async throws -> [Post] {
+        guard let url = URL(string: Constants.baseURL) else { throw APIError.invalidUrl }
         let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let resp = response as? HTTPURLResponse, resp.statusCode == 200 else {
+        guard let resp = response as? HTTPURLResponse, 200...299 ~= resp.statusCode else {
             throw APIError.invalidResponse
         }
-        
-        do {
-            return try JSONDecoder().decode([Post].self, from: data)
-        } catch {
-            throw APIError.decodingError
+        return try JSONDecoder().decode([Post].self, from: data)
+    }
+    
+    // Using Future for GET call
+    func fetchPosts() -> Future<[Post], Error> {
+        return Future {[weak self] promise in
+            guard let self = self, let url = URL(string: Constants.baseURL) else {
+                promise(.failure(APIError.invalidUrl))
+                return
+            }
+            
+            URLSession.shared.dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: [Post].self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink { completion in
+                    switch completion {
+                    case .failure(let err):
+                        promise(.failure(err))
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { posts in
+                    promise(.success(posts))
+                }
+                .store(in: &self.cancellables)
         }
     }
+    
+    // Using Async await and POST call
+    func addPost(_ postData: PostData) async throws -> Post {
+        guard let url = URL(string: Constants.baseURL) else {
+            throw APIError.invalidUrl
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = try JSONEncoder().encode(postData)
+        request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let resp = (response as? HTTPURLResponse), resp.statusCode == 201 else {
+            throw APIError.serviceUnavailable
+        }
+
+        if let responseString = String(data: data, encoding: .utf8) {
+                print("Response: \(responseString)")
+        }
+        
+        return try JSONDecoder().decode(Post.self, from: data)
+    }
+    
+    // Using generics and Async await
+    func fetchPostsAsyncAwait<T: Decodable>() async throws -> T {
+        guard let url = URL(string: Constants.baseURL) else {
+            throw APIError.invalidUrl
+        }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+    
+    
 }
-
-
-
-//    func fetchPosts() -> Future<[Post], Error> {
-//        return Future<[Post], Error> { promise in
-//            guard let url = URL(string: self.urlString) else {
-//                let error = NSError(domain: "InvalidURL", code: 0, userInfo: nil)
-//                promise(.failure(error))
-//                return
-//            }
-//
-//            URLSession.shared.dataTaskPublisher(for: url)
-//                .map(\.data)
-//                .decode(type: [Post].self, decoder: JSONDecoder())
-//                .receive(on: DispatchQueue.main)
-//                .sink(receiveCompletion: { completion in
-//                    switch completion {
-//                    case .finished:
-//                        break
-//                    case .failure(let error):
-//                        promise(.failure(error))
-//                    }
-//                }, receiveValue: { response in
-//                    promise(.success(response))
-//            })
-//                .store(in: &self.cancelable)
-//        } //ending return
-//
-//    }// ending fetch post
-//
-//} // Ending class
-
 
