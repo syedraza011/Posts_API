@@ -1,13 +1,14 @@
 //
-//  PostsDemoTests.swift
-//  PostsDemoTests
+//  PostDemoTest.swift
+//  PostsUITests
 //
-//  Created by Renu Punjabi on 6/22/23.
+//  Created by Syed Raza on 7/27/23.
 //
 
 import XCTest
+
+@testable import Posts
 import Combine
-@testable import PostsDemo
 
 enum FileName: String {
     case postsFailure, postsSuccess
@@ -119,7 +120,7 @@ class MockPostsService: PostsServiceProtocol {
         return Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json")
     }
     
-    func fetchPostsUsingAsyncAwait() async throws -> [PostsDemo.Post] {
+    func fetchPostsUsingAsyncAwait() async throws -> [Posts.Post] {
         guard let url = load(fileName.rawValue) else { throw APIError.invalidUrl }
         
         let data = try! Data(contentsOf: url)
@@ -132,7 +133,7 @@ class MockPostsService: PostsServiceProtocol {
         
     }
     
-    func fetchPosts() -> Future<[PostsDemo.Post], Error> {
+    func fetchPosts() -> Future<[Posts.Post], Error> {
         return Future {[weak self] promise in
             guard let self = self, let url = self.load(fileName.rawValue) else {
                 promise(.failure(APIError.invalidUrl))

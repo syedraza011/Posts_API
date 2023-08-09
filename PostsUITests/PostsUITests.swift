@@ -7,7 +7,7 @@
 
 import XCTest
 import Combine
-@testable import PostDemo
+@testable import Posts
 final class PostsUITests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -26,7 +26,7 @@ final class PostsUITests: XCTestCase {
     //----i added
     func test_getPostAsyncAwait_should_succeed () async throws {
         let exp = XCTestExpectation(description: "Aync Await call suceed")
-        let viewModel = PostsViewModel (Service: MockPostsService(fileName: .postsSuccess))
+        let viewModel = PostsViewModel (service: MockPostsService(fileName: .postsSuccess))
         await viewModel.getPostsAsyncAwait ()
         viewModel.$sectionPosts
     }

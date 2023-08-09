@@ -22,7 +22,7 @@ struct PostData: Codable {
 
 final class PostsViewModel: ObservableObject {
     @Published var sectionPosts = [SectionData]()
-    @Published var state: AsyncState = .initial
+    @Published var state: APIState = .initial
     
     var cancellables = Set<AnyCancellable>()
     
