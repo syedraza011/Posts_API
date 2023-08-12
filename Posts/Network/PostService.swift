@@ -114,7 +114,8 @@ class PostsService: PostsServiceProtocol {
         }
         return try JSONDecoder().decode(T.self, from: data)
     }
-    
-    
+    func deletePost() async throws -> Bool {
+        return
+    }
 }
 
